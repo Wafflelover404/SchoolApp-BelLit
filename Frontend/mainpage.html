@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Menu Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .button {
+            display: block;
+            width: 80%;
+            padding: 15px;
+            margin: 10px;
+            font-size: 18px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .book-menu {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            list-style-type: none;
+            text-align: left;
+        }
+
+        .book-menu.show {
+            display: block;
+        }
+
+        .book-button {
+            background-color: rgba(128, 128, 128, 0.5);
+            border: none;
+            color: white;
+            padding: 10px 30px 10px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeQVYPrJAZd7uIoHmuG0ld1qUSPXxX4973kxAffvjUhaNblV3nRQr9SnwHnEERXWMXdG8&usqp=CAU/350x150'); /* Replace with your image path */
+            background-size: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button id="button1" class="button">Button 1</button>
+    <button class="button">Button 2</button>
+    <button class="button">Button 3</button>
+    <button class="button">Button 4</button>
+</div>
+
+<div id="bookMenu" class="book-menu">
+    <!-- Book menu buttons will be generated here -->
+</div>
+
+<script>
+    // List of possible book names
+    let literatureWorks = new Map();
+    literatureWorks.set("Жыціе Ефрасінні Полацкай", "Неизвестный автор");
+    literatureWorks.set("Летописец вялікіх князёў літоўскіх", "Неизвестный автор");
+    literatureWorks.set("Беларуска-літоўскі летапіс (1446) – урывак «Пахвала вялікаму князю Вітаўту»", "Неизвестный автор");
+    literatureWorks.set("Прадмова да кнігі «Юдзіф» (урывак)", "Францыск Скарына");
+    literatureWorks.set("Паэма «Песня пра зубра»", "Мікола Гусоўскі");
+    literatureWorks.set("Апавяданне «Шляхціц Завальня»", "Ян Баршчэўскі");
+    literatureWorks.set("Апавяданне «Плачка»", "Ян Баршчэўскі");
+    literatureWorks.set("Апавяданне «Белая Сарока»", "Ян Баршчэўскі");
+    literatureWorks.set("Балада «Свіцязянка»", "Адам Міцкевіч");
+    literatureWorks.set("Паэма «Тарас на Парнасе»", "Канстанцін Вераніцын");
+    literatureWorks.set("Верш «Санет»", "Максім Багдановіч");
+    literatureWorks.set("Верш «Маладыя гады»", "Максім Багдановіч");
+    literatureWorks.set("Верш «Жывеш не вечна, чалавек...»", "Максім Багдановіч");
+    literatureWorks.set("Верш «Плакала лета, зямлю пакідаючы...»", "Максім Багдановіч");
+    literatureWorks.set("Верш «А хто там ідзе?»", "Янка Купала");
+    literatureWorks.set("Верш «Мая малітва»", "Янка Купала");
+    literatureWorks.set("Верш «Жняя»", "Янка Купала");
+    literatureWorks.set("Верш «Явар і каліна»", "Янка Купала");
+    literatureWorks.set("Верш «Роднае слова»", "Янка Купала");
+    literatureWorks.set("Паэма «Бандароўна»", "Янка Купала");
+    literatureWorks.set("Паэма «Новая зямля»", "Якуб Колас");
+    literatureWorks.set("Верш «Мой хлеб надзённы»", "Максім Танк");
+    literatureWorks.set("Верш «Завушніцы»", "Максім Танк");
+    literatureWorks.set("Верш «Ты яшчэ толькі намёк на чалавека...»", "Максім Танк");
+    literatureWorks.set("Верш «Не воблака, а проста аблачынка...»", "Максім Танк");
+    literatureWorks.set("Верш «Любоў мая...»", "Максім Танк");
+    literatureWorks.set("Верш «Ты пакліч мяне. Пазаві...»", "Яўгенія Янішчыц");
+    literatureWorks.set("Верш «Чаму ніколі не баюся я...»", "Яўгенія Янішчыц");
+    literatureWorks.set("Верш «Не воблака, а проста аблачынка...»", "Яўгенія Янішчыц");
+    literatureWorks.set("Верш «Любоў мая...»", "Яўгенія Янішчыц");
+    literatureWorks.set("Фарс-вадэвіль «Пінская шляхта»", "Вінцэнт Дунін-Марцінкевіч");
+    literatureWorks.set("Апавяданне «На пыльнай дарозе»", "Кузьма Чорны");
+    literatureWorks.set("Аповесць «Непаўторная вясна»", "Іван Шамякін");
+
+    // Function to generate the book menu buttons
+    function generateBookMenuButtons() {
+        const bookMenu = document.getElementById('bookMenu');
+        bookMenu.innerHTML = ''; // Clear the current list
+        literatureWorks.forEach((author, title) => {
+            const bookButton = document.createElement('button');
+            bookButton.textContent = title;
+            bookButton.classList.add('book-button');
+            bookMenu.appendChild(bookButton);
+        });
+    }
+
+    // Function to toggle the book menu
+    function toggleBookMenu() {
+        const bookMenu = document.getElementById('bookMenu');
+        bookMenu.classList.toggle('show');
+
+        // If the menu is being shown, generate the book menu buttons
+        if (bookMenu.classList.contains('show')) {
+            generateBookMenuButtons();
+        }
+    }
+    // Add event listener to Button 1
+    const button1 = document.getElementById('button1');
+    button1.addEventListener('click', toggleBookMenu);
+</script>
+</body>
+</html>
