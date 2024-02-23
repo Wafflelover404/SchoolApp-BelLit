@@ -81,7 +81,6 @@
             transform: translateY(-50%);
             width: 20px;
             height: 20px;
-            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeQVYPrJAZd7uIoHmuG0ld1qUSPXxX4973kxAffvjUhaNblV3nRQr9SnwHnEERXWMXdG8&usqp=CAU/350x150'); /* Replace with your image path */
             background-size: cover;
             border-radius: 50%;
         }
@@ -139,16 +138,20 @@
     // Function to generate the book menu buttons
     function generateBookMenuButtons() {
         const bookMenu = document.getElementById('bookMenu');
-        bookMenu.innerHTML = ''; // Clear the current list
+        bookMenu.innerHTML = '';
         literatureWorks.forEach((author, title) => {
             const bookButton = document.createElement('button');
             bookButton.textContent = title;
             bookButton.classList.add('book-button');
+
+            // Set a different background image based on the author
+            let authorName = author.replace(/\s/g, '').toLowerCase(); // Remove spaces and convert to lowercase
+            bookButton.style.backgroundImage = `url('/authors/${authorName}.jpg')`;
+
             bookMenu.appendChild(bookButton);
         });
     }
 
-    // Function to toggle the book menu
     function toggleBookMenu() {
         const bookMenu = document.getElementById('bookMenu');
         bookMenu.classList.toggle('show');
@@ -158,6 +161,7 @@
             generateBookMenuButtons();
         }
     }
+
     // Add event listener to Button 1
     const button1 = document.getElementById('button1');
     button1.addEventListener('click', toggleBookMenu);
