@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Menu</title>
+    <style>
+
+        body {
+            background-image: url('./Wallpapers/wallpaper.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .book-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Align items at the start, not center */
+            height: 100vh;
+            overflow-y: auto; /* Add a scrollbar if the content overflows */
+            padding: 20px; /* Add some padding */
+        }
+
+        .book-button {
+            position: relative; /* Add this line */
+            display: block;
+            width: 80%;
+            padding: 15px;
+            margin: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+
+        .book-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 15px; /* Adjust this value to position the image on the left */
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background-size: cover;
+            border-radius: 50%;
+            background-position: center; /* Ensure the image is centered within the circle */
+        }
+
+    </style>
+</head>
+<body>
+<div id="bookMenu" class="book-menu">
+    <!-- Book menu buttons will be generated here -->
+</div>
+<script>
+    // List of possible book names
+    let literatureWorks = new Map();
+    literatureWorks.set("Жыціе Ефрасінні Полацкай", "Неизвестный автор");
+    literatureWorks.set("Летописец вялікіх князёў літоўскіх", "Неизвестный автор");
+    literatureWorks.set("Беларуска-літоўскі летапіс (1446) – урывак «Пахвала вялікаму князю Вітаўту»", "Неизвестный автор");
+    literatureWorks.set("Прадмова да кнігі «Юдзіф» (урывак)", "Францыск Скарына");
+    literatureWorks.set("Паэма «Песня пра зубра»", "Мікола Гусоўскі");
+    literatureWorks.set("Апавяданне «Шляхціц Завальня»", "Ян Баршчэўскі");
+    literatureWorks.set("Апавяданне «Плачка»", "Ян Баршчэўскі");
+    literatureWorks.set("Апавяданне «Белая Сарока»", "Ян Баршчэўскі");
+    let literatureWorks1 = new Map();
+    literatureWorks1.set("Балада «Свіцязянка»", "Адам Міцкевіч");
+    literatureWorks1.set("Паэма «Тарас на Парнасе»", "Канстанцін Вераніцын");
+    literatureWorks1.set("Верш «Санет»", "Максім Багдановіч");
+    literatureWorks1.set("Верш «Маладыя гады»", "Максім Багдановіч");
+    literatureWorks1.set("Верш «Жывеш не вечна, чалавек...»", "Максім Багдановіч");
+    literatureWorks1.set("Верш «Плакала лета, зямлю пакідаючы...»", "Максім Багдановіч");
+    literatureWorks1.set("Верш «А хто там ідзе?»", "Янка Купала");
+    literatureWorks1.set("Верш «Мая малітва»", "Янка Купала");
+    let literatureWorks2 = new Map();
+    literatureWorks2.set("Верш «Жняя»", "Янка Купала");
+    literatureWorks2.set("Верш «Явар і каліна»", "Янка Купала");
+    literatureWorks2.set("Верш «Роднае слова»", "Янка Купала");
+    literatureWorks2.set("Паэма «Бандароўна»", "Янка Купала");
+    literatureWorks2.set("Паэма «Новая зямля»", "Якуб Колас");
+    literatureWorks2.set("Верш «Мой хлеб надзённы»", "Максім Танк");
+    literatureWorks2.set("Верш «Завушніцы»", "Максім Танк");
+    literatureWorks2.set("Верш «Ты яшчэ толькі намёк на чалавека...»", "Максім Танк");
+    let literatureWorks3 = new Map();
+    literatureWorks3.set("Верш «Не воблака, а проста аблачынка...»", "Максім Танк");
+    literatureWorks3.set("Верш «Любоў мая...»", "Максім Танк");
+    literatureWorks3.set("Верш «Ты пакліч мяне. Пазаві...»", "Яўгенія Янішчыц");
+    literatureWorks3.set("Верш «Чаму ніколі не баюся я...»", "Яўгенія Янішчыц");
+    literatureWorks3.set("Верш «Не воблака, а проста аблачынка...»", "Яўгенія Янішчыц");
+    literatureWorks3.set("Верш «Любоў мая...»", "Яўгенія Янішчыц");
+    literatureWorks3.set("Фарс-вадэвіль «Пінская шляхта»", "Вінцэнт Дунін-Марцінкевіч");
+    literatureWorks3.set("Апавяданне «На пыльнай дарозе»", "Кузьма Чорны");
+    literatureWorks3.set("Аповесць «Непаўторная вясна»", "Іван Шамякін");
+
+
+    // Function to generate the book menu buttons
+    function generateBookMenuButtons() {
+        const bookMenu = document.getElementById('bookMenu');
+        selectedLiteratureWorks.forEach((author, title) => {
+            const bookButton = document.createElement('button');
+            bookButton.textContent = title;
+            bookButton.classList.add('book-button');
+
+            let authorName = author.replace(/\s/g, '').toLowerCase();
+            bookButton.classList.add(`author-${authorName}`);
+
+            var style = document.createElement('style');
+            style.innerHTML = `
+                .author-${authorName}::before {
+                    background-image: url('./authors/${authorName}.jpg');
+                }
+            `;
+
+            document.head.appendChild(style);
+
+            bookMenu.appendChild(bookButton);
+        });
+
+    }
+
+    // Get the buttonId from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const buttonId = urlParams.get('buttonId');
+
+    // Determine which literature works to display based on the buttonId
+    let selectedLiteratureWorks;
+    switch (buttonId) {
+        case '1':
+            selectedLiteratureWorks = literatureWorks;
+            break;
+        case '2':
+            selectedLiteratureWorks = literatureWorks1;
+            break;
+        case '3':
+            selectedLiteratureWorks = literatureWorks2;
+            break;
+        case '4':
+            selectedLiteratureWorks = literatureWorks3;
+            break;
+        default:
+            selectedLiteratureWorks = literatureWorks; // Default to literatureWorks if no buttonId is found
+    }
+
+    // Generate the book menu buttons
+    generateBookMenuButtons(selectedLiteratureWorks);
+</script>
+</body>
+</html>
