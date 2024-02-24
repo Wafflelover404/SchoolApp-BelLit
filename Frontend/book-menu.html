@@ -97,6 +97,13 @@
     literatureWorks3.set("Апавяданне «На пыльнай дарозе»", "Кузьма Чорны");
     literatureWorks3.set("Аповесць «Непаўторная вясна»", "Іван Шамякін");
 
+    // Function to transfer filenames properly and search up for them
+    function sanitizeFilename(filename) {
+        // This regular expression finds characters that are not allowed in filenames on various operating systems.
+        let regex = /[<>:"/\\|?*\s]+/g; // Added \s to match any whitespace character
+        let sanitizedFilename = filename.replace(regex, '_');
+        return sanitizedFilename;
+    }
 
     // Function to generate the book menu buttons
     function generateBookMenuButtons() {
