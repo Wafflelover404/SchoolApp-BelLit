@@ -106,6 +106,7 @@
     }
 
     // Function to generate the book menu buttons
+    // Function to generate the book menu buttons
     function generateBookMenuButtons() {
         const bookMenu = document.getElementById('bookMenu');
         selectedLiteratureWorks.forEach((author, title) => {
@@ -118,16 +119,27 @@
 
             var style = document.createElement('style');
             style.innerHTML = `
-                .author-${authorName}::before {
-                    background-image: url('./authors/${authorName}.jpg');
-                }
-            `;
+            .author-${authorName}::before {
+                background-image: url('./authors/${authorName}.jpg');
+            }
+        `;
 
             document.head.appendChild(style);
 
+            // Add an event listener to the button
+            // Add an event listener to the button
+            bookButton.addEventListener('click', () => {
+                // Construct the URL with query parameters
+                let url = new URL('authors/article/index.html', window.location.href);
+                url.searchParams.append('author_name', author);
+                url.searchParams.append('work_name', title);
+
+                // Open the new HTML file with the constructed URL in the same window or tab
+                window.location.href = url.href;
+            });
+
             bookMenu.appendChild(bookButton);
         });
-
     }
 
     // Get the buttonId from the URL query parameters
