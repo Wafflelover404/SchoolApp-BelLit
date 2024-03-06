@@ -50,7 +50,7 @@
                                     <h4 class="mbr-section-subtitle mbr-fonts-style mb-3 display-5">
                                         <strong><a href="https://be.wikipedia.org/wiki/%D0%9D%D0%BE%D0%B2%D0%B0%D1%8F_%D0%B7%D1%8F%D0%BC%D0%BB%D1%8F_(%D0%BF%D0%B0%D1%8D%D0%BC%D0%B0)" class="text-black" target="_blank"><div id = "name"></div></a></strong>
                                     </h4>
-                                    <p class="mbr-text mbr-fonts-style display-7"><div id="textInBrief"></div>&nbsp;<br><br><strong><a href="https://knihi.com/Jakub_Kolas/Novaja_ziamla.html" class="text-black" target="_blank">Чытаць онлайн</a><br></strong><a href="https://be.wikipedia.org/wiki/%D0%AF%D0%BA%D1%83%D0%B1_%D0%9A%D0%BE%D0%BB%D0%B0%D1%81" class="text-black text-primary" target="_blank" style="">Пра аўтара</a><br><br></p>
+                                    <p class="mbr-text mbr-fonts-style display-7"><div id="textInBrief"></div>&nbsp;<br><br><strong><a href="https://knihi.com/Jakub_Kolas/Novaja_ziamla.html" class="text-black" target="_blank">Чытаць онлайн</a><br></strong><a id="authorWikipedia" href="#" class="text-black text-primary" target="_blank">Пра аўтара</a><br><br></p>
                                 </div>
                             </div>
                         </div>
@@ -97,28 +97,23 @@
                 });
         }
 
-        fetchAndDisplayWiki(file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                this.authorWiki = reader.result;
-                fetch(this.authorWiki)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
+        fetchAuthorWiki() {
+            // Fetch the author's Wikipedia link
+            fetch(this.authorWiki)
+                .then(response => {
+                    if (response.ok) {
                         return response.text();
-                    })
-                    .then(text => {
-                        const wikiLink = document.createElement('a');
-                        wikiLink.href = this.authorWiki;
-                        wikiLink.textContent = text;
-                        document.getElementById('authorWiki').appendChild(wikiLink);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching author biography:', error);
-                    });
-            };
-            reader.readAsText(file);
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    // Update the HTML element with the author's Wikipedia link
+                    document.getElementById('authorWikipedia').href = data;
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         }
     }
 
@@ -168,6 +163,7 @@
     const textInBrief = new TextInBrief(textName);
 
     authorBiography.fetchAndDisplay();
+    authorBiography.fetchAuthorWiki();
     textInBrief.fetchAndDisplay();
 
     let name = document.getElementById('name');
